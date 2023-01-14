@@ -4,7 +4,7 @@ function showNotification() {
     })
 
     notification.onclick = (event) => {
-        window.location.href = "youtube.com" //what you wish to do
+        window.location.href = "FIX YOUR POSTURE" //what you wish to do
     }
 }
 
