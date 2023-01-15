@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+from flask import Flask, render_template, Response
 
 # variables made for convenience
 mp_drawing = mp.solutions.drawing_utils
@@ -33,50 +34,76 @@ def checkPosture(l_shldr_y, r_shldr_y):
         print("GOOD POSTURE!, %", percentage)
     return percentage
 
+def main():
+    while cap.isOpened():
+        success, image = cap.read()
+        image.flags.writeable = False
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        results = pose.process(image)
 
-while cap.isOpened():
-    success, image = cap.read()
-    image.flags.writeable = False
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    results = pose.process(image)
-
-    #drawing indication lines
-    image.flags.writeable = True
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    mp_drawing.draw_landmarks(
-        image,
-        results.pose_landmarks,
-        mp_pose.POSE_CONNECTIONS,
-        landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style()
-    )
-
-
-    # Use lm and lmPose as representative of the following methods.
-    # Process the image.
-    keypoints = pose.process(image)
-    lm = keypoints.pose_landmarks
-    lmPose = mp_pose.PoseLandmark
-    h,w = image.shape[:2]
+        #drawing indication lines
+        image.flags.writeable = True
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        mp_drawing.draw_landmarks(
+            image,
+            results.pose_landmarks,
+            mp_pose.POSE_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style()
+        )
 
 
-    #flip image horizontally for mirrored view
-    cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
+        # Use lm and lmPose as representative of the following methods.
+        # Process the image.
+        keypoints = pose.process(image)
+        lm = keypoints.pose_landmarks
+        lmPose = mp_pose.PoseLandmark
+        h,w = image.shape[:2]
 
-    # wait for user to type in p 
-    if cv2.waitKey(1) == ord('p'):
-        print('POSITION RECORDED!')
-        good_left = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h) 
-        good_right = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
 
-    l_shldr_y = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h)
-    r_shldr_y = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
+        #flip image horizontally for mirrored view
+        cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
 
-    checkPosture(l_shldr_y, r_shldr_y) 
+        # wait for user to type in p 
+        if cv2.waitKey(1) == ord('p'):
+            print('POSITION RECORDED!')
+            good_left = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h) 
+            good_right = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
 
-    #stops running webcam until 'q' is clicked 
-    if cv2.waitKey(1) == ord('q'):
-        break
+        l_shldr_y = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h)
+        r_shldr_y = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
 
-cap.release()
-cv2.destroyAllWindows()        
+        checkPercentage = checkPosture(l_shldr_y, r_shldr_y) 
 
+        #stops running webcam until 'q' is clicked 
+        if cv2.waitKey(1) == ord('q'):
+            break
+        print(checkPercentage)
+
+    cap.release()
+    cv2.destroyAllWindows()        
+
+#----------------------
+def getWebFrame(cam):
+    ret, frame = cam.read()
+    ret ,jpeg = cv2.imencode('.jpg', frame)
+    return jpeg.tobytes()
+
+website = Flask(__name__)
+
+@website.route("/")
+def page():
+    return render_template('index.html', barValue = main())
+
+def runCamera():
+  while True:
+    frame = getWebFrame(cap)
+    yield (b'--frame\r\n'
+    b'Content-Type: image/jpeg\r\n\r\n' + frame
+    + b'\r\n\r\n')
+
+@website.route('/video_feed')
+def video_feed():
+  return Response(runCamera())
+
+if __name__ == '__main__':
+  website.run(debug=True)
