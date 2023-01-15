@@ -10,6 +10,8 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
 pose = mp_pose.Pose(min_detection_confidence = 0.5, min_tracking_confidence = 0.5)
+global good_left
+global good_right
 good_left = 0
 good_right = 0
 
@@ -39,6 +41,12 @@ def generate_frames():
 
             # Use lm and lmPose as representative of the following methods.
             # Process the image.
+            global keypoints
+            global lm
+            global lmPose
+            global h,w
+            global percentage
+
             keypoints = pose.process(image)
             lm = keypoints.pose_landmarks
             lmPose = mp_pose.PoseLandmark
@@ -62,14 +70,14 @@ def generate_frames():
 
             # if(good_left == 0 and good_right == 0): 
             #     print("Press P to record your position, or q to quit!")
-            # elif(l_shldr_y > good_left + 15 or r_shldr_y > good_right + 15):
-            #     percentage = 100- ((relative/range) * 100)
-            #     if (percentage <= 0):
-            #         percentage = 0
-            #     print("BAD POSTURE, %", percentage)
-            # else:
-            #     percentage = 100
-            #     print("GOOD POSTURE!, %", percentage)
+            if(l_shldr_y > good_left + 15 or r_shldr_y > good_right + 15):
+                percentage = 100- ((relative/range) * 100)
+                if (percentage <= 0):
+                    percentage = 0
+                print("BAD POSTURE, %", percentage)
+            else:
+                percentage = 100
+                print("GOOD POSTURE!, %", percentage)
 
             #flip image horizontally for mirrored view
             image = cv2.flip(image, 1)
@@ -91,6 +99,20 @@ def index():
 @app.route('/video')
 def video():
     return Response(generate_frames(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/calibrate')
+def calibrate():
+
+    good_left = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h) 
+    good_right = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
+    print(good_left)
+    print(good_right)
+    return render_template('index.html')
+
+@app.route('/percentage')
+def percentage():
+    return percentage
+
 
 if __name__=="__main__":
     app.run(debug=True)
