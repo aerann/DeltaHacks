@@ -10,11 +10,8 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
 pose = mp_pose.Pose(min_detection_confidence = 0.5, min_tracking_confidence = 0.5)
-<<<<<<< HEAD
 global good_left
 global good_right
-=======
->>>>>>> d941181ab4b3f9c83dd5fdf3bf98f835f118ac27
 good_left = 0
 good_right = 0
 
@@ -44,15 +41,12 @@ def generate_frames():
 
             # Use lm and lmPose as representative of the following methods.
             # Process the image.
-<<<<<<< HEAD
             global keypoints
             global lm
             global lmPose
             global h,w
             global percentage
 
-=======
->>>>>>> d941181ab4b3f9c83dd5fdf3bf98f835f118ac27
             keypoints = pose.process(image)
             lm = keypoints.pose_landmarks
             lmPose = mp_pose.PoseLandmark
@@ -76,7 +70,6 @@ def generate_frames():
 
             # if(good_left == 0 and good_right == 0): 
             #     print("Press P to record your position, or q to quit!")
-<<<<<<< HEAD
             if(l_shldr_y > good_left + 15 or r_shldr_y > good_right + 15):
                 percentage = 100- ((relative/range) * 100)
                 if (percentage <= 0):
@@ -85,16 +78,6 @@ def generate_frames():
             else:
                 percentage = 100
                 print("GOOD POSTURE!, %", percentage)
-=======
-            # elif(l_shldr_y > good_left + 15 or r_shldr_y > good_right + 15):
-            #     percentage = 100- ((relative/range) * 100)
-            #     if (percentage <= 0):
-            #         percentage = 0
-            #     print("BAD POSTURE, %", percentage)
-            # else:
-            #     percentage = 100
-            #     print("GOOD POSTURE!, %", percentage)
->>>>>>> d941181ab4b3f9c83dd5fdf3bf98f835f118ac27
 
             #flip image horizontally for mirrored view
             image = cv2.flip(image, 1)
@@ -117,7 +100,6 @@ def index():
 def video():
     return Response(generate_frames(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
-<<<<<<< HEAD
 @app.route('/calibrate')
 def calibrate():
 
@@ -132,8 +114,6 @@ def percentage():
     return percentage
 
 
-=======
->>>>>>> d941181ab4b3f9c83dd5fdf3bf98f835f118ac27
 if __name__=="__main__":
     app.run(debug=True)
 
