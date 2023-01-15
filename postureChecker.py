@@ -35,8 +35,3 @@ with mp_pose.Pose(min_detection_confidence = 0.5,min_tracking_confidence = 0.5) 
 
     cap.release()
     cv2.destroyAllWindows()        
-
-def getFrame(capture):
-    ret, frame = capture.read()
-    
-    ret, jpeg = cv2.imencode('.jpg', frame)

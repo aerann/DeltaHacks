@@ -1,4 +1,3 @@
-<style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap');
 
 body{
@@ -53,22 +52,3 @@ p{
   border-style: solid;
   border-width: 4px;
 }
-</style>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width"/>
-  <link rel="stylesheet"  href="url_for('static', filename='static/style.css'">
-  <title>Posture Tracker</title>
-  <script defer src="desktop_noti.js"></script>
-</head>
-  <body>
-    <div id="page-header-div">
-      <p id="page-header">Posture Check</p>
-      <div id="title-underline"></div>
-    </div>
-    <div id="camera-border">
-      <div id="camera"></div>
-    </div>
-  </body>
-</html>

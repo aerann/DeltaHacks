@@ -1,7 +1,7 @@
 function showNotification() {
     const notification = new Notification("Posture Check", {
 
-        icon: "https://www.pngmart.com/image/613344/png/613343",
+        icon: "https://www.pngmart.com/files/22/Mad-Emoji-PNG-Pic.png",
         body: "FIX YOUR POSTURE!"
         
     })
