@@ -44,15 +44,29 @@ p{
 }
 
 #camera-border{
-  
+  height: 1000px;
   right: 15em;
-  height: 16em;
-  width: 100%;
   border-color: #F0D3F7;
   border-radius: 7px;
   border-style: solid;
   border-width: 4px;
+  display: flex;
 }
+
+#bar-div{
+  width: 3em;
+  height: 12em;
+  background-color: rebeccapurple;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+#bar{
+  background-color: green;
+  width: 100%;
+}
+
 </style>
 
 <head>
@@ -61,6 +75,7 @@ p{
   <link rel="stylesheet"  href="url_for('static', filename='static/style.css'">
   <title>Posture Tracker</title>
   <script defer src="desktop_noti.js"></script>
+
 </head>
   <body>
     <div id="page-header-div">
@@ -69,8 +84,20 @@ p{
     </div>
     <div id="camera-border">
       <div id="camera">
-        <img id='bg' src="{{ url_for('video_feed') }}">
+        <img src="{{ url_for('video') }}"/>
       </div>
     </div>
+    <div id="bar-div">
+      <div id="bar"></div>
+    </div>
+    <button type="button" onclick="window.location.href='{{ url_for( 'calibrate') }}';">Calibrate Good Posture</button>
+    <script>
+      function makeBar({{ url_for('percentage') }}){
+        let bar = document.getElementById('bar')
+        bar.style.height = percentage*100 + '%'
+      }
+    </script>
   </body>
 </html>
+
+

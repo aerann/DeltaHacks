@@ -88,7 +88,4 @@ class VideoCamera(object):
 
     #returns the percentage of how good your posture is 
 
-aaaa = VideoCamera()
 
-while True:
-    aaaa.processPosture()
