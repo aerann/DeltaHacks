@@ -19,6 +19,7 @@ def checkPosture(l_shldr_y, r_shldr_y):
     height = cap.get(4)  # float `height`
     range = height - good_left
     relative = l_shldr_y - good_left
+    percentage = 0
 
     if(good_left == 0 and good_right == 0): 
         print("Press P to record your position, or q to quit!")
