@@ -10,15 +10,17 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
 pose = mp_pose.Pose(min_detection_confidence = 0.5, min_tracking_confidence = 0.5)
-global good_left
-global good_right
-good_left = 0
-good_right = 0
+# global good_left
+# global good_right
+# good_left = 0
+# good_right = 0
 
 
 camera=cv2.VideoCapture(0)
 
 def generate_frames():
+    good_left = 0
+    good_right = 0
     while True:
         ## read the camera frame
         success,image=camera.read()
@@ -55,10 +57,10 @@ def generate_frames():
             
         
             # wait for user to type in p 
-            # if cv2.waitKey(1) == ord('p'):
-            #     print('POSITION RECORDED!')
-            #     good_left = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h) 
-            #     good_right = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
+            if cv2.waitKey(1) == ord('p'):
+                print('POSITION RECORDED!')
+                good_left = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h) 
+                good_right = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
 
             l_shldr_y = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h)
             r_shldr_y = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
@@ -68,8 +70,8 @@ def generate_frames():
             relative = l_shldr_y - good_left
             percentage = 0
 
-            # if(good_left == 0 and good_right == 0): 
-            #     print("Press P to record your position, or q to quit!")
+            if(good_left == 0 and good_right == 0): 
+                print("Press P to record your position, or q to quit!")
             if(l_shldr_y > good_left + 15 or r_shldr_y > good_right + 15):
                 percentage = 100- ((relative/range) * 100)
                 if (percentage <= 0):
