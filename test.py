@@ -72,7 +72,7 @@ class VideoCamera(object):
         l_shldr_y = int(lm.landmark[lmPose.LEFT_SHOULDER].y * h)
         r_shldr_y = int(lm.landmark[lmPose.RIGHT_SHOULDER].y * h)
 
-        return self.checkPosture(l_shldr_y, r_shldr_y)
+        return self.calculatePercentage(l_shldr_y, r_shldr_y)
     
 
     # variables made for convenience
@@ -88,7 +88,4 @@ class VideoCamera(object):
 
     #returns the percentage of how good your posture is 
 
-aaaa = VideoCamera()
 
-while True:
-    aaaa.processPosture()
