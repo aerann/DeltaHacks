@@ -24,9 +24,12 @@ with mp_pose.Pose(min_detection_confidence = 0.5, min_tracking_confidence = 0.5)
             print("Press P to record your position, or q to quit!")
         elif(l_shldr_y > good_left + 15 or r_shldr_y > good_right + 15):
             percentage = 100- ((relative/range) * 100)
+            if (percentage <= 0):
+                percentage = 0
             print("BAD POSTURE, %", percentage)
         else:
-            print("GOOD POSTURE!")
+            percentage = 100
+            print("GOOD POSTURE!, %", percentage)
 
 
     while cap.isOpened():
