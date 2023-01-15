@@ -3,17 +3,17 @@ import mediapipe as mp
 import cv2
 # import postureChecker
 
-app=Flask(__name__)
+app=Flask(__name__,template_folder='templates')
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
 pose = mp_pose.Pose(min_detection_confidence = 0.5, min_tracking_confidence = 0.5)
-# global good_left
-# global good_right
-# good_left = 0
-# good_right = 0
+global good_left
+global good_right
+good_left = 0
+good_right = 0
 
 
 camera=cv2.VideoCapture(0)

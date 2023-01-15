@@ -83,16 +83,19 @@ img{
 }
 #bar-div{
   width: 3em;
-  height: inherit;
   background-color: rebeccapurple;
   display: flex;
   flex-direction: column;
   justify-content: end;
+  align-items: center;
+  border-radius: 7px;
+  margin-left: 10px;
 }
 
 #bar{
   background-color: green;
-  width: 100%;
+  width: 60%;
+  height: 100%;
 }
 
 </style>
@@ -131,13 +134,7 @@ img{
 
     </div>
     
-    <!-- <button type="button" onclick="window.location.href='{{ url_for( 'calibrate') }}';">Calibrate Good Posture</button>
-    <script>
-      function makeBar({{ url_for('percentage') }}){
-        let bar = document.getElementById('bar')
-        bar.style.height = percentage*100 + '%'
-      }
-    </script> -->
+
   </body>
 </html>
 
