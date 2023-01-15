@@ -13,7 +13,7 @@ class VideoCamera(object):
         self.good_right = 0
 
     def __del__(self):
-        self.video.releast()
+        self.video.release()
     
     def get_frame(self):
         frame = self.video.read()
@@ -36,7 +36,7 @@ class VideoCamera(object):
         return percentage
 
     def processPosture(self):
-        success, image = self.cap.read()
+        success, image = self.video.read()
         image.flags.writeable = False
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         results = self.pose.process(image)
@@ -88,7 +88,7 @@ class VideoCamera(object):
 
     #returns the percentage of how good your posture is 
 
-    this = VideoCamera()
+aaaa = VideoCamera()
 
-    while True:
-        this.processPosture()
+while True:
+    aaaa.processPosture()
